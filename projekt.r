@@ -2,188 +2,7 @@ install.packages("readxl")
 library(readxl)
 my_data <- read_excel(file.choose("kohkiloyeh.xlsx"))
 
-#naivebayes
 
-library(naivebayes)
-dane=my_data
-head(dane)
-xtabs(~topic, dane)
-str(dane)
-length(dane$topic)
-
-dokladnosc = function(){
-
-idx=sample(2,nrow(dane),replace=T,prob=c(0.8,0.2))
-train=dane[idx==1,]
-test=dane[idx==2,]
-
-model=naive_bayes(topic ~ .,data=train, usekernel = TRUE)
-
-plot(model)
-
-p=predict(model,test)
-
-cf=table(p,test$topic)
-cf
-
-pcf=cf/sum(cf)
-pcf
-
-return (sum(diag(cf))/sum (cf))
-}
-
-results = replicate(100, dokladnosc())
-
-sr_dokladnosc = mean(results)
-odchylenie = sd(results)
-
-cat("Jakosc klasyfikatora: ", sr_dokladnosc, "\n")
-
-cat("Odchylenie standardowe: ", odchylenie, "\n")
-
-head(dane)
-xtabs(~topic, dane)
-str(dane)
-length(dane$topic)
-
-dokladnosc = function(){
-
-idx=sample(2,nrow(dane),replace=T,prob=c(0.7,0.3))
-train=dane[idx==1,]
-test=dane[idx==2,]
-
-model=naive_bayes(topic ~ .,data=train, usekernel = TRUE)
-
-plot(model)
-
-p=predict(model,test)
-
-cf=table(p,test$topic)
-cf
-
-pcf=cf/sum(cf)
-pcf
-
-return (sum(diag(cf))/sum (cf))
-}
-
-results = replicate(100, dokladnosc())
-
-sr_dokladnosc = mean(results)
-odchylenie = sd(results)
-
-cat("Jakosc klasyfikatora: ", sr_dokladnosc, "\n")
-
-cat("Odchylenie standardowe: ", odchylenie, "\n")
-
-
-head(dane)
-xtabs(~topic, dane)
-str(dane)
-length(dane$topic)
-
-dokladnosc = function(){
-
-idx=sample(2,nrow(dane),replace=T,prob=c(0.9,0.1))
-train=dane[idx==1,]
-test=dane[idx==2,]
-
-model=naive_bayes(topic ~ .,data=train, usekernel = TRUE)
-
-plot(model)
-
-p=predict(model,test)
-
-cf=table(p,test$topic)
-cf
-
-pcf=cf/sum(cf)
-pcf
-
-return (sum(diag(cf))/sum (cf))
-}
-
-results = replicate(100, dokladnosc())
-
-sr_dokladnosc = mean(results)
-odchylenie = sd(results)
-
-cat("Jakosc klasyfikatora: ", sr_dokladnosc, "\n")
-
-cat("Odchylenie standardowe: ", odchylenie, "\n")
-
-
-sd(p)
-
-#random forest
-
-my_data <- read_excel(file.choose("kohkiloyeh.xlsx"))
-
-install.packages("randomForest")
-
-library(randomForest)
-library(datasets)
-
-dane=my_data
-str(my_data)
-df=dane
-
-dane$topic <- as.factor(dane$topic)
-table(dane$topic)
-
-set.seed(222)
-ind <- sample(2, nrow(dane), replace = TRUE, prob = c(0.9, 0.1))
-train <- dane[ind==1,]
-test <- dane[ind==2,]
-
-rf <- randomForest(topic~., dane=train, proximity=TRUE) print(rf)
-randomForest(formula = topic ~ ., data = train)
-
-plot(dane)
-
-library(randomForest)
-library(datasets)
-
-dane=my_data
-str(my_data)
-df=dane
-
-dane$topic <- as.factor(dane$topic)
-table(dane$topic)
-
-odchylenia = apply(dane[, sapply(dane, is.numeric)], 2, sd)
-print(odchylenia)
-
-set.seed(222)
-ind <- sample(2, nrow(dane), replace = TRUE, prob = c(0.8, 0.2))
-train <- dane[ind==1,]
-test <- dane[ind==2,]
-
-rf <- randomForest(topic~., dane=train, proximity=TRUE) print(rf)
-randomForest(formula = topic ~ ., data = train)
-
-plot(dane)
-
-
-library(randomForest)
-library(datasets)
-
-dane=my_data
-str(my_data)
-df=dane
-
-dane$topic <- as.factor(dane$topic)
-table(dane$topic)
-
-set.seed(222)
-ind <- sample(2, nrow(dane), replace = TRUE, prob = c(0.7, 0.3))
-train <- dane[ind==1,]
-test <- dane[ind==2,]
-
-rf <- randomForest(topic~., dane=train, proximity=TRUE) print(rf)
-randomForest(formula = topic ~ ., data = train)
-
-plot(dane)
 
 
 #nn
@@ -324,5 +143,190 @@ nnet_predictions_test <-predict(nnet_model, test)
 # Confusion matrix on test set
 table(test$topic, nnet_predictions_test)
 31/nrow(test)  
+
+plot(dane)
+
+
+#naivebayes
+
+library(naivebayes)
+dane=my_data
+head(dane)
+xtabs(~topic, dane)
+str(dane)
+length(dane$topic)
+
+dokladnosc = function(){
+
+idx=sample(2,nrow(dane),replace=T,prob=c(0.8,0.2))
+train=dane[idx==1,]
+test=dane[idx==2,]
+
+model=naive_bayes(topic ~ .,data=train, usekernel = TRUE)
+
+plot(model)
+
+p=predict(model,test)
+
+cf=table(p,test$topic)
+cf
+
+pcf=cf/sum(cf)
+pcf
+
+return (sum(diag(cf))/sum (cf))
+}
+
+results = replicate(100, dokladnosc())
+
+sr_dokladnosc = mean(results)
+odchylenie = sd(results)
+
+cat("Jakosc klasyfikatora: ", sr_dokladnosc, "\n")
+
+cat("Odchylenie standardowe: ", odchylenie, "\n")
+
+head(dane)
+xtabs(~topic, dane)
+str(dane)
+length(dane$topic)
+
+dokladnosc = function(){
+
+idx=sample(2,nrow(dane),replace=T,prob=c(0.7,0.3))
+train=dane[idx==1,]
+test=dane[idx==2,]
+
+model=naive_bayes(topic ~ .,data=train, usekernel = TRUE)
+
+plot(model)
+
+p=predict(model,test)
+
+cf=table(p,test$topic)
+cf
+
+pcf=cf/sum(cf)
+pcf
+
+return (sum(diag(cf))/sum (cf))
+}
+
+results = replicate(100, dokladnosc())
+
+sr_dokladnosc = mean(results)
+odchylenie = sd(results)
+
+cat("Jakosc klasyfikatora: ", sr_dokladnosc, "\n")
+
+cat("Odchylenie standardowe: ", odchylenie, "\n")
+
+
+head(dane)
+xtabs(~topic, dane)
+str(dane)
+length(dane$topic)
+
+dokladnosc = function(){
+
+idx=sample(2,nrow(dane),replace=T,prob=c(0.9,0.1))
+train=dane[idx==1,]
+test=dane[idx==2,]
+
+model=naive_bayes(topic ~ .,data=train, usekernel = TRUE)
+
+plot(model)
+
+p=predict(model,test)
+
+cf=table(p,test$topic)
+cf
+
+pcf=cf/sum(cf)
+pcf
+
+return (sum(diag(cf))/sum (cf))
+}
+
+results = replicate(100, dokladnosc())
+
+sr_dokladnosc = mean(results)
+odchylenie = sd(results)
+
+cat("Jakosc klasyfikatora: ", sr_dokladnosc, "\n")
+
+cat("Odchylenie standardowe: ", odchylenie, "\n")
+
+
+sd(p)
+
+
+#random forest
+
+my_data <- read_excel(file.choose("kohkiloyeh.xlsx"))
+
+install.packages("randomForest")
+
+library(randomForest)
+library(datasets)
+
+dane=my_data
+str(my_data)
+df=dane
+
+dane$topic <- as.factor(dane$topic)
+table(dane$topic)
+
+set.seed(222)
+ind <- sample(2, nrow(dane), replace = TRUE, prob = c(0.9, 0.1))
+train <- dane[ind==1,]
+test <- dane[ind==2,]
+
+rf <- randomForest(topic~., dane=train, proximity=TRUE) print(rf)
+randomForest(formula = topic ~ ., data = train)
+
+plot(dane)
+
+library(randomForest)
+library(datasets)
+
+dane=my_data
+str(my_data)
+df=dane
+
+dane$topic <- as.factor(dane$topic)
+table(dane$topic)
+
+odchylenia = apply(dane[, sapply(dane, is.numeric)], 2, sd)
+print(odchylenia)
+
+set.seed(222)
+ind <- sample(2, nrow(dane), replace = TRUE, prob = c(0.8, 0.2))
+train <- dane[ind==1,]
+test <- dane[ind==2,]
+
+rf <- randomForest(topic~., dane=train, proximity=TRUE) print(rf)
+randomForest(formula = topic ~ ., data = train)
+
+plot(dane)
+
+
+library(randomForest)
+library(datasets)
+
+dane=my_data
+str(my_data)
+df=dane
+
+dane$topic <- as.factor(dane$topic)
+table(dane$topic)
+
+set.seed(222)
+ind <- sample(2, nrow(dane), replace = TRUE, prob = c(0.7, 0.3))
+train <- dane[ind==1,]
+test <- dane[ind==2,]
+
+rf <- randomForest(topic~., dane=train, proximity=TRUE) print(rf)
+randomForest(formula = topic ~ ., data = train)
 
 plot(dane)
