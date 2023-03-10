@@ -3,8 +3,6 @@ library(readxl)
 my_data <- read_excel(file.choose("kohkiloyeh.xlsx"))
 
 
-
-
 #nn
 
 install.packages("neuralnet")
